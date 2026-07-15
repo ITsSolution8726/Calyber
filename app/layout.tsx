@@ -19,39 +19,43 @@ const bodyFont = Inter({
    GLOBAL SEO METADATA
 ========================= */
 export const metadata: Metadata = {
-  metadataBase: new URL("https://boostupdigital.co.in "),
+  metadataBase: new URL("https://itssolution.in"), // Replace with your actual domain
 
   title: {
-    default: "Boost Up Digital — Lead-Focused Digital Marketing Agency",
-    template: "%s | Boost Up Digital",
+    default: "CALYBER — Learn Electro Dance with Akash Swami",
+    template: "%s | CALYBER",
   },
 
   description:
-    "Boost Up Digital is a modern digital marketing and entertainment studio based in Singur, Hooghly, WB. We help brands grow through SEO, SMM, Meta Ads, Google Ads, website design, ad films, TVCs, and cinematic brand storytelling.",
+    "Join CALYBER by Akash Swami and master Electro dance through structured online training, WhatsApp learning, live Zoom sessions, mentorship, and a thriving dance community.",
 
   keywords: [
-    "Boost Up Digital",
-    "Digital Marketing Agency",
-    "SEO Services",
-    "Social Media Marketing",
-    "Meta Ads Agency",
-    "Google Ads Expert",
-    "Lead Generation Agency",
-    "Website Design Company",
-    "Boost Up Entertainment",
-    "TVC Production",
-    "Ad Film Production",
-    "Short Film Production",
-    "Digital Marketing Hooghly",
-    "Digital Marketing West Bengal",
-    "Marketing Agency India",
+    "CALYBER",
+    "Akash Swami",
+    "Electro Dance",
+    "Electro Dance Course",
+    "Online Dance Classes",
+    "Dance Mentorship",
+    "Electro Foundation",
+    "Dance Training",
+    "Freestyle Dance",
+    "Dance Community",
+    "Dance Course India",
+    "WhatsApp Dance Course",
+    "Online Electro Course",
+    "Live Dance Classes",
+    "Electro Dance Academy",
   ],
 
-  authors: [{ name: "Boost Up Digital" }],
+  authors: [
+    {
+      name: "Akash Swami",
+    },
+  ],
 
-  creator: "Boost Up Digital",
+  creator: "Akash Swami",
 
-  publisher: "Boost Up Digital",
+  publisher: "CALYBER",
 
   alternates: {
     canonical: "/",
@@ -72,24 +76,22 @@ export const metadata: Metadata = {
 
   openGraph: {
     type: "website",
-
     locale: "en_IN",
+    url: "https://yourdomain.com", // Replace with actual domain
 
-    url: "https://boostupdigital.co.in ",
+    siteName: "CALYBER",
 
-    siteName: "Boost Up Digital",
-
-    title: "Boost Up Digital — SEO, Ads, Social Media & Entertainment Studio",
+    title: "CALYBER — Learn Electro Dance with Akash Swami",
 
     description:
-      "Lead-focused digital marketing agency helping businesses grow through SEO, Meta Ads, Google Ads, social media marketing, web design, TVCs, ad films and cinematic storytelling.",
+      "Build your dance foundation through CALYBER's structured Electro dance program featuring beginner courses, live Zoom classes, mentorship, WhatsApp learning, and community support.",
 
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Boost Up Digital",
+        alt: "CALYBER by Akash Swami",
       },
     ],
   },
@@ -97,10 +99,10 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
 
-    title: "Boost Up Digital",
+    title: "CALYBER — Learn Electro Dance",
 
     description:
-      "Performance marketing, creative storytelling and cinematic ad films that help brands grow faster.",
+      "Structured Electro dance learning with Akash Swami. Beginner-friendly courses, live classes, mentorship and community.",
 
     images: ["/og-image.jpg"],
   },
@@ -108,17 +110,13 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/logo.webp",
-        media: "(prefers-color-scheme: light)",
-      },
-
-      {
-        url: "/logo.webp",
-        media: "(prefers-color-scheme: dark)",
+        url: "/favicon.ico",
       },
     ],
 
-    apple: "/logo.webp",
+    shortcut: "/favicon.ico",
+
+    apple: "/apple-touch-icon.png",
   },
 };
 
@@ -129,9 +127,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${headingFont.variable} ${bodyFont.variable}`}>
-      <body className="font-body">
-        {children}
-      </body>
+      <body className="font-body">{children}</body>
     </html>
   );
 }

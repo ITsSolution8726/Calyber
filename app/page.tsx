@@ -119,7 +119,7 @@ function Nav() {
           href="#top"
           className="font-display text-sm font-black tracking-[0.14em]"
         >
-          ELECTRO<span className="text-primary">.</span>LAB
+          <span className="text-primary">CALYBER</span>
         </a>
         <nav className="hidden items-center gap-8 text-sm text-foreground/80 md:flex">
           <a href="#pricing" className="hover:text-foreground">
@@ -248,6 +248,102 @@ function Hero() {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProblemSolution() {
+  return (
+    <section className="py-24">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-4xl text-center">
+          <Chip>Why CALIBAR</Chip>
+
+          <h2 className="mt-6 font-display text-4xl font-black leading-tight md:text-6xl">
+            Most beginners don't have a
+            <span className="text-primary"> talent problem.</span>
+            <br />
+            They have a
+            <span className="text-lightning"> learning system problem.</span>
+          </h2>
+
+          <p className="mx-auto mt-8 max-w-3xl text-lg leading-8 text-foreground/70">
+            Most dance classes teach choreography first. Students memorize
+            shapes without understanding rhythm, groove or body control. CALIBAR
+            changes that by teaching the foundation before the moves.
+          </p>
+        </div>
+
+        <div className="mt-20 grid gap-8 lg:grid-cols-2">
+          {/* OLD WAY */}
+
+          <div className="rounded-3xl border border-red-500/20 bg-red-500/5 p-8">
+            <div className="mb-8 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-500/10 text-xl text-red-400">
+                ✕
+              </div>
+
+              <span className="text-xs font-bold uppercase tracking-[0.25em] text-red-400">
+                The Old Way
+              </span>
+            </div>
+
+            <h3 className="text-3xl font-display font-black">
+              Learn Choreography First
+            </h3>
+
+            <div className="mt-8 space-y-5">
+              {[
+                "Copy combinations without understanding music.",
+                "Poor rhythm and weak body control.",
+                "Forget routines after a few weeks.",
+                "Progress becomes slow and frustrating.",
+                "Freestyle feels impossible.",
+              ].map((item) => (
+                <div key={item} className="flex gap-4">
+                  <div className="mt-2 h-2.5 w-2.5 rounded-full bg-red-400" />
+
+                  <p className="text-foreground/75">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* CALIBAR */}
+
+          <div className="rounded-3xl border border-primary/30 bg-primary/5 p-8 shadow-[0_0_60px_rgba(112,82,255,.08)]">
+            <div className="mb-8 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                ✓
+              </div>
+
+              <span className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
+                The CALIBAR Way
+              </span>
+            </div>
+
+            <h3 className="text-3xl font-display font-black">
+              Build the System First
+            </h3>
+
+            <div className="mt-8 space-y-5">
+              {[
+                "Understand rhythm before choreography.",
+                "Develop groove, bounce and musicality.",
+                "Train body control step by step.",
+                "Build confidence through repetition.",
+                "Freestyle becomes natural.",
+              ].map((item) => (
+                <div key={item} className="flex gap-4">
+                  <div className="mt-2 h-2.5 w-2.5 rounded-full bg-primary" />
+
+                  <p className="text-foreground/75">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1521,6 +1617,7 @@ function Footer() {
     </footer>
   );
 }
+
 function Testimonials() {
   const items = [
     {
@@ -1586,6 +1683,7 @@ export default function Home() {
     <div className="min-h-screen bg-background text-foreground">
       <Nav />
       <Hero />
+      <ProblemSolution />
       <BeginnerExperience />
       <WebinarBar />
       <Webinar />

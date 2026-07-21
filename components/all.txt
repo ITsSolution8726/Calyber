@@ -14,7 +14,6 @@ import {
   Waves,
   PlayCircle,
 } from "lucide-react";
-import JoinModal from "@/components/JoinModal";
 
 const heroDancer = "./hero-dancer.jpg";
 const singaPortrait = "./singa-portrait.jpg";
@@ -48,7 +47,6 @@ const WA = {
   ),
   float: waLink("Hi CALYBER 👋 I'm on the site and have a quick question."),
 };
-
 
 function useReveal<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
@@ -94,6 +92,19 @@ function Reveal({
   );
 }
 
+function useCountdown(target: Date) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const diff = Math.max(0, target.getTime() - now);
+  const d = Math.floor(diff / 86_400_000);
+  const h = Math.floor((diff % 86_400_000) / 3_600_000);
+  const m = Math.floor((diff % 3_600_000) / 60_000);
+  const s = Math.floor((diff % 60_000) / 1000);
+  return { d, h, m, s };
+}
 
 function Dot({ className = "" }: { className?: string }) {
   return (
@@ -494,6 +505,147 @@ function BeginnerExperience() {
   );
 }
 
+function PackageCard({
+  tone,
+  title,
+  price,
+  old,
+  badge,
+  body,
+  cta,
+  href,
+}: {
+  tone: "lightning" | "bolt";
+  title: string;
+  price: string;
+  old: string;
+  badge?: string;
+  body: string;
+  cta: string;
+  href: string;
+}) {
+  const bg =
+    tone === "lightning"
+      ? "bg-[color:var(--lightning)] text-[color:var(--lightning-foreground)]"
+      : "bg-[color:var(--bolt)] text-[color:var(--bolt-foreground)]";
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`group relative block overflow-hidden rounded-3xl p-6 ${bg} shadow-[0_20px_80px_-30px_rgba(0,0,0,0.7)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_100px_-30px_rgba(0,0,0,0.9)]`}
+    >
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      {badge && (
+        <span className="absolute right-4 top-4 rounded-full bg-black/25 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em]">
+          {badge}
+        </span>
+      )}
+      <div className="flex items-start justify-between gap-4">
+        <h3 className="font-display text-2xl font-black tracking-tight">
+          {title}
+        </h3>
+        <div className="text-right">
+          <div className="font-display text-3xl font-black">{price}</div>
+          <div className="text-xs line-through opacity-60">{old}</div>
+        </div>
+      </div>
+      <p className="mt-6 max-w-sm text-sm opacity-90">{body}</p>
+      <div className="mt-10 flex items-center justify-between border-t border-black/15 pt-4 text-sm font-bold uppercase tracking-[0.14em]">
+        <span>{cta.replace(" →", "")}</span>
+        <span className="transition group-hover:translate-x-1">→</span>
+      </div>
+    </a>
+  );
+}
+
+function WebinarBar() {
+  const start = new Date();
+  start.setDate(start.getDate() + 2);
+  start.setHours(start.getHours() + 7);
+  const c = useCountdown(start);
+  return (
+    <section className="border-y border-white/10 bg-white/[0.02]">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6 px-6 py-4 text-xs uppercase tracking-[0.14em] text-foreground/80">
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 animate-pulse rounded-full bg-primary" />
+          <span>Program starts</span>
+          <span className="rounded-full border border-primary/60 px-2 py-0.5 text-primary">
+            July 17
+          </span>
+        </div>
+        <div className="flex items-baseline gap-1 font-mono tabular-nums">
+          <span>
+            {String(c.d).padStart(2, "0")}
+            <sub className="text-[9px]">d</sub>
+          </span>
+          <span>:</span>
+          <span>
+            {String(c.h).padStart(2, "0")}
+            <sub className="text-[9px]">h</sub>
+          </span>
+          <span>:</span>
+          <span>
+            {String(c.m).padStart(2, "0")}
+            <sub className="text-[9px]">m</sub>
+          </span>
+          <span>:</span>
+          <span>
+            {String(c.s).padStart(2, "0")}
+            <sub className="text-[9px]">s</sub>
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Webinar() {
+  return (
+    <section className="relative overflow-hidden py-24">
+      <div className="pointer-events-none absolute inset-0 bg-grid opacity-30" />
+      <div className="relative mx-auto max-w-5xl px-6">
+        <Chip>Free live webinar · Sunday, July 12</Chip>
+        <h2 className="mt-6 font-display text-3xl font-black uppercase leading-tight tracking-tight md:text-5xl">
+          Live free Electro Foundation webinar
+        </h2>
+        <p className="mt-4 text-sm uppercase tracking-[0.14em] text-foreground/60">
+          11 AM New York · 5 PM Paris · 6 PM Moscow
+        </p>
+        <ul className="mt-10 grid gap-4 md:grid-cols-3">
+          {[
+            "What Electro foundation actually is",
+            "What it is built on",
+            "A strategy for training and studying",
+          ].map((t) => (
+            <li
+              key={t}
+              className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 text-sm"
+            >
+              <span className="mr-2 text-primary">✦</span>
+              {t}
+            </li>
+          ))}
+        </ul>
+        <p className="mt-6 text-sm text-foreground/60">
+          Plus info about the CALYBER project starting mid-July.
+        </p>
+        <div className="mt-8 flex flex-wrap items-center gap-4">
+          <a
+            href="#register"
+            className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[0_0_40px_-8px_var(--primary)] hover:brightness-110"
+          >
+            Register →
+          </a>
+          <span className="text-xs uppercase tracking-[0.14em] text-foreground/60">
+            Free · Live · Zoom
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 
 const programs = [
   {
@@ -575,13 +727,6 @@ const programs = [
 ];
 
 function Pricing() {
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const [selectedProgram, setSelectedProgram] = useState<{
-    title: string;
-    subtitle: string;
-    price: string;
-  } | null>(null);
   return (
     <section
       id="pricing"
@@ -630,24 +775,15 @@ function Pricing() {
 
         <div className="mt-20 grid gap-8 lg:grid-cols-3">
 
-          {programs.map((program, index) => (
+          {programs.map((program) => (
             <ProgramCard
-              key={index}
+              key={program.title}
               {...program}
-              onJoin={(program) => {
-                setSelectedProgram(program);
-                setModalOpen(true);
-              }}
             />
           ))}
 
         </div>
       </div>
-      <JoinModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        program={selectedProgram}
-      />
     </section>
   );
 }
@@ -663,13 +799,8 @@ type ProgramCardProps = {
   button: string;
   href: string;
   features: string[];
-
-  onJoin: (program: {
-    title: string;
-    subtitle: string;
-    price: string;
-  }) => void;
 };
+
 function ProgramCard({
   icon: Icon,
   title,
@@ -681,7 +812,6 @@ function ProgramCard({
   button,
   href,
   features,
-  onJoin,
 }: ProgramCardProps) {
   return (
     <div
@@ -773,16 +903,10 @@ function ProgramCard({
 
         {/* Button */}
 
-        <button
-          onClick={() =>
-            onJoin({
-              title,
-              subtitle,
-              price,
-            })
-          }
-          className={`mt-6 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold uppercase tracking-[0.14em] transition-all duration-300
-    ${popular
+        <Link
+          href={href}
+          className={`mt-6 flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold uppercase tracking-[0.14em] transition-all duration-300
+          ${popular
               ? "bg-primary text-black hover:brightness-110"
               : "border border-primary/30 bg-primary/10 text-primary hover:bg-primary hover:text-black"
             }`}
@@ -790,13 +914,208 @@ function ProgramCard({
           {button}
 
           <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-        </button>
+        </Link>
 
       </div>
     </div>
   );
 }
 
+function Foundation() {
+  return (
+    <section
+      id="foundation"
+      className="relative overflow-hidden bg-(--lightning)/15 py-24"
+    >
+      <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" />
+      <div className="relative mx-auto grid max-w-7xl gap-14 px-6 lg:grid-cols-2">
+        <div>
+          <Chip>The course · in WhatsApp</Chip>
+          <h2 className="mt-6 font-display text-4xl font-black leading-[1.05] md:text-5xl">
+            Build your{" "}
+            <span className="text-primary italic">CALYBER Foundation</span> —
+            the full library, hosted in a private WhatsApp channel.
+          </h2>
+          <p className="mt-6 text-foreground/80">
+            The complete Electro library is stored in a private WhatsApp
+            channel. Participants receive access for 3 months from the official
+            cohort start date — recorded lessons, concepts, practice tools,
+            music packs and historical materials.
+          </p>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2">
+            {[
+              {
+                title: "Private Learning",
+                desc: "Lifetime access during your plan through WhatsApp.",
+                icon: "💬",
+              },
+              {
+                title: "Live Sessions",
+                desc: "Weekly Zoom sessions with Akash Swami.",
+                icon: "🎥",
+              },
+              {
+                title: "Practice Roadmap",
+                desc: "Step-by-step learning path.",
+                icon: "📈",
+              },
+              {
+                title: "Community",
+                desc: "Get feedback & grow together.",
+                icon: "🤝",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition hover:border-primary/40 hover:bg-primary/5"
+              >
+                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-2xl">
+                  {item.icon}
+                </div>
+
+                <h4 className="font-semibold">{item.title}</h4>
+
+                <p className="mt-2 text-sm text-foreground/65">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-8 flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.14em]">
+            <span className="rounded-full bg-[color:var(--lightning)] px-3 py-1.5 font-bold text-[color:var(--lightning-foreground)]">
+              Included in Lightning
+            </span>
+            <span className="text-foreground/60">and in Thunderbolt</span>
+          </div>
+        </div>
+        <div className="rounded-3xl border border-white/10 bg-black/30 p-4">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 to-slate-950">
+            <img
+              src={foundationVibe}
+              alt="Electro dancer light trails"
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-700 hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" />
+            <div className="absolute left-4 top-4 rounded-full bg-[#25D366] px-3 py-1 text-xs font-bold text-black">
+              💬 WHATSAPP
+            </div>
+            <div className="absolute inset-x-4 bottom-4 flex items-end justify-between text-xs uppercase tracking-[0.14em] text-white/90">
+              <span>Lesson preview · 02 / 03</span>
+              <span>·</span>
+            </div>
+          </div>
+          <div className="mt-4 flex items-center justify-between text-xs uppercase tracking-[0.14em] text-foreground/60">
+            <span>Private WhatsApp channel</span>
+            <span>· Weekly video lessons</span>
+          </div>
+          <StudyList />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function StudyList() {
+  const sections = [
+    {
+      title: "Basic Elements",
+      items: [
+        "Point",
+        "Rotor",
+        "Slide",
+        "Haircut",
+        "Butterfly",
+        "Space",
+        "Hand Rotor",
+        "Big Rotor",
+        "Roll",
+        "…and more",
+      ],
+    },
+    {
+      title: "Steps & Grooves",
+      items: [
+        "Bounce",
+        "Wave",
+        "Step Variations",
+        "Foot Control",
+        "Body Isolation",
+      ],
+    },
+    {
+      title: "Classic Combination Patterns",
+      items: ["Combo 1", "Combo 2", "Combo 3", "Transitions"],
+    },
+    {
+      title: "Bonus Classes",
+      items: ["Freestyle Tips", "Performance Mindset", "Stretching"],
+    },
+    {
+      title: "Music for Training",
+      items: ["Practice Playlist", "Battle Music", "Warm-up Tracks"],
+    },
+    {
+      title: "History of the Style",
+      items: ["Origins", "Evolution", "Important Crews"],
+    },
+  ];
+
+  const [open, setOpen] = useState<number>(0);
+
+  return (
+    <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-5 backdrop-blur-md">
+      <div className="mb-4 flex items-center justify-between">
+        <h4 className="font-display text-lg font-bold">What we will study</h4>
+
+        <span className="text-xs uppercase tracking-[0.14em] text-foreground/60">
+          Click to expand
+        </span>
+      </div>
+
+      <div className="space-y-2">
+        {sections.map((section, index) => {
+          const isOpen = open === index;
+
+          return (
+            <div
+              key={section.title}
+              className="overflow-hidden rounded-xl border border-white/10 bg-white/5"
+            >
+              <button
+                onClick={() => setOpen(isOpen ? -1 : index)}
+                className="flex w-full items-center justify-between px-4 py-4 text-left transition hover:bg-white/5"
+              >
+                <span className="font-semibold">{section.title}</span>
+
+                <ChevronDown
+                  className={`h-5 w-5 transition-transform duration-300 ${isOpen ? "rotate-180" : ""
+                    }`}
+                />
+              </button>
+
+              <div
+                className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  }`}
+              >
+                <div className="overflow-hidden">
+                  <div className="grid grid-cols-2 gap-2 px-4 pb-4 text-sm text-foreground/70">
+                    {section.items?.map((item) => (
+                      <div
+                        key={item}
+                        className="rounded-lg bg-white/5 px-3 py-2"
+                      >
+                        • {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 function Mentorship() {
   return (
@@ -861,7 +1180,129 @@ function Mentorship() {
   );
 }
 
+function Idea() {
+  return (
+    <section className="py-24">
+      <div className="mx-auto max-w-7xl px-6">
+        <Chip>The idea behind it</Chip>
+        <h2 className="mt-6 max-w-4xl font-display text-4xl font-black leading-[1.05] md:text-6xl">
+          Electro is more than{" "}
+          <span className="italic text-primary">a set of moves.</span>
+        </h2>
+        <div className="mt-10 grid gap-8 text-foreground/80 md:grid-cols-2">
+          <p>
+            Behind every element there is a concept, a timing, a way of using
+            space, rhythm and energy.
+          </p>
+          <p>
+            Inside ELECTRO LAB we study how movements look, how they work, how
+            to develop them and how to use them as tools for your own dance. A
+            system of knowledge — not a pile of random moves.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
 
+function Compare() {
+  const cards = [
+    {
+      title: "₹99 Beginner Experience",
+      emoji: "🚀",
+      desc: "Perfect if you're completely new to Hip-Hop and want to understand the CALYBER learning system before joining the full program.",
+      points: [
+        "Complete beginners",
+        "Try before committing",
+        "Learn the basics",
+        "2-Hour Live Workshop",
+      ],
+    },
+    {
+      title: "Foundation Program",
+      emoji: "⭐",
+      highlight: true,
+      desc: "Our complete beginner transformation program with structured classes, assignments and community support.",
+      points: [
+        "16 Live Classes",
+        "Weekly Practice Plan",
+        "WhatsApp Community",
+        "Assignments & Certificate",
+      ],
+    },
+    {
+      title: "Elite Coaching",
+      emoji: "👑",
+      desc: "For serious learners who want personal mentorship, faster progress and individual guidance.",
+      points: [
+        "1-on-1 Coaching",
+        "Personal Feedback",
+        "Priority Support",
+        "Custom Roadmap",
+      ],
+    },
+  ];
+
+  return (
+    <section className="py-24">
+      <div className="mx-auto max-w-7xl px-6">
+
+        <Chip>Which one is for you?</Chip>
+
+        <h2 className="mt-6 font-display text-4xl font-black md:text-5xl">
+          Choose your path.
+        </h2>
+
+        <p className="mt-5 max-w-2xl text-white/60">
+          Every dancer starts differently. Choose the learning experience
+          that matches your current level.
+        </p>
+
+        <div className="mt-14 grid gap-6 lg:grid-cols-3">
+
+          {cards.map((card) => (
+            <div
+              key={card.title}
+              className={`rounded-3xl border p-8 transition duration-300 hover:-translate-y-2
+              ${card.highlight
+                  ? "border-primary bg-primary/5"
+                  : "border-white/10 bg-[#0B0B0B]"
+                }`}
+            >
+              <div className="text-3xl">{card.emoji}</div>
+
+              <h3 className="mt-5 font-display text-3xl font-black">
+                {card.title}
+              </h3>
+
+              <p className="mt-4 text-sm leading-7 text-white/65">
+                {card.desc}
+              </p>
+
+              <div className="mt-8 space-y-3">
+
+                {card.points.map((point) => (
+                  <div
+                    key={point}
+                    className="flex items-center gap-3"
+                  >
+                    <div className="h-2 w-2 rounded-full bg-primary" />
+
+                    <span className="text-sm text-white/85">
+                      {point}
+                    </span>
+                  </div>
+                ))}
+
+              </div>
+            </div>
+          ))}
+
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function ForYou() {
   const items = [
@@ -1126,93 +1567,51 @@ function About() {
 
 function ReadyForMore() {
   return (
-    <section className="relative overflow-hidden py-28">
+    <section className="relative overflow-hidden py-24">
       <div className="absolute inset-0 bg-grid opacity-10" />
 
-      <div className="absolute -left-24 top-0 h-80 w-80 rounded-full bg-primary/10 blur-[140px]" />
-      <div className="absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-primary/15 blur-[160px]" />
+      <div className="relative mx-auto max-w-5xl px-6">
+        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 text-center backdrop-blur-xl md:p-14">
+          <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
+            Continue Your Journey
+          </span>
 
-      <div className="relative mx-auto max-w-7xl px-6">
-        <div className="overflow-hidden rounded-[36px] border border-primary/20 bg-gradient-to-br from-[#151515] via-[#101010] to-[#090909] px-8 py-14 shadow-[0_0_80px_rgba(252,76,19,.08)] md:px-16 md:py-20">
+          <h2 className="mt-5 font-display text-4xl font-black leading-tight md:text-6xl">
+            Loved the{" "}
+            <span className="italic text-primary">
+              ₹99 Beginner Experience?
+            </span>
+          </h2>
 
-          <Chip>Your Journey Starts Here</Chip>
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-foreground/70 md:text-lg">
+            If you've completed the Beginner Experience and enjoyed learning
+            with CALYBER, unlock the complete dance system with advanced
+            concepts, live mentorship, structured roadmap and an active
+            community.
+          </p>
 
-          <div className="mt-8 grid items-center gap-14 lg:grid-cols-[1.2fr_.8fr]">
-
-            {/* Left */}
-
-            <div>
-
-              <h2 className="font-display text-4xl font-black leading-tight md:text-6xl">
-                ₹99 is only
-                <span className="text-primary"> the beginning.</span>
-              </h2>
-
-              <p className="mt-8 max-w-2xl text-lg leading-8 text-foreground/65">
-                The Beginner Experience introduces you to the CALYBER way of
-                learning. Once you've built confidence and understand the
-                fundamentals, you'll be ready for the complete Foundation
-                Program where we help you develop rhythm, groove, musicality,
-                freestyle and choreography through a structured learning system.
-              </p>
-
-              <div className="mt-10 flex flex-wrap gap-4">
-
-                <a
-                  href="#pricing"
-                  className="rounded-xl bg-primary px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] text-black transition hover:scale-105"
-                >
-                  Join ₹99 Beginner Experience →
-                </a>
-
-                <a
-                  href={WA.question}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-xl border border-white/20 px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] transition hover:border-primary hover:bg-primary/10"
-                >
-                  Ask a Question
-                </a>
-
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="rounded-2xl border border-primary/30 bg-primary/10 px-8 py-5">
+              <div className="text-sm uppercase tracking-widest text-foreground/60">
+                Complete Program
               </div>
 
-            </div>
-
-            {/* Right */}
-
-            <div className="rounded-3xl border border-primary/20 bg-primary/5 p-8">
-
-              <span className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-                Your Learning Journey
-              </span>
-
-              <div className="mt-8 space-y-5">
-
-                {[
-                  "₹99 Beginner Experience",
-                  "Build Confidence",
-                  "Learn Real Fundamentals",
-                  "Join Foundation Program",
-                  "Become an Independent Dancer",
-                ].map((step, i) => (
-                  <div
-                    key={step}
-                    className="flex items-center gap-4"
-                  >
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary font-bold text-black">
-                      {i + 1}
-                    </div>
-
-                    <p className="font-medium">{step}</p>
-                  </div>
-                ))}
-
+              <div className="mt-1 font-display text-5xl font-black text-primary">
+                ₹899
               </div>
-
             </div>
 
+            <a
+              href="#pricing"
+              className="rounded-full bg-primary px-8 py-4 font-semibold text-primary-foreground transition hover:brightness-110"
+            >
+              Explore Complete Program →
+            </a>
           </div>
 
+          <p className="mt-6 text-sm text-foreground/50">
+            No pressure. Start with ₹99. Upgrade anytime when you're ready.
+          </p>
         </div>
       </div>
     </section>
@@ -1390,7 +1789,61 @@ function FinalCTA() {
   );
 }
 
-
+function Register() {
+  const [first, setFirst] = useState("");
+  const [last, setLast] = useState("");
+  const [email, setEmail] = useState("");
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    window.open(WA.webinar(`${first} ${last}`.trim(), email), "_blank");
+  };
+  return (
+    <section id="register" className="py-24">
+      <div className="mx-auto max-w-2xl px-6">
+        <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-8 shadow-[0_30px_120px_-40px_var(--primary)]">
+          <h3 className="font-display text-2xl font-black md:text-3xl">
+            Register for the webinar
+          </h3>
+          <p className="mt-2 text-sm text-foreground/60">
+            Sunday, July 12 · Free · Live on Zoom
+          </p>
+          <form className="mt-8 grid gap-4" onSubmit={submit}>
+            <div className="grid gap-4 md:grid-cols-2">
+              <input
+                required
+                value={first}
+                onChange={(e) => setFirst(e.target.value)}
+                placeholder="First name"
+                className="rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm outline-none focus:border-primary"
+              />
+              <input
+                required
+                value={last}
+                onChange={(e) => setLast(e.target.value)}
+                placeholder="Last name"
+                className="rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm outline-none focus:border-primary"
+              />
+            </div>
+            <input
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              type="email"
+              className="rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm outline-none focus:border-primary"
+            />
+            <button className="mt-2 animate-pulse-glow rounded-xl bg-[#25D366] py-4 text-sm font-bold uppercase tracking-[0.14em] text-black transition hover:brightness-110">
+              Continue in WhatsApp →
+            </button>
+            <p className="text-center text-xs text-foreground/50">
+              You'll be redirected to our WhatsApp bot to confirm your spot.
+            </p>
+          </form>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function VideoShowcase() {
   return (
@@ -1660,13 +2113,6 @@ function Testimonials() {
 }
 
 export default function Home() {
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const [selectedProgram, setSelectedProgram] = useState<{
-    title: string;
-    subtitle: string;
-    price: string;
-  } | null>(null);
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Nav />
@@ -1693,7 +2139,6 @@ export default function Home() {
       <Footer />
       <FloatingWhatsApp />
       <WelcomePopup />
-
     </div>
   );
 }

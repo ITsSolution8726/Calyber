@@ -1,0 +1,126 @@
+"use client";
+
+import { WA } from "@/lib/whatsapp";
+
+const benefits = [
+  "2 Live Interactive Zoom Sessions",
+  "Personal Dance Assessment",
+  "CALYBER Learning System Explained",
+  "Custom Practice Roadmap",
+  "Live Feedback from Akash Swami",
+  "Private Community Access",
+];
+
+const pricingDetails = [
+  { label: "Format", value: "2 Live Zoom Sessions" },
+  { label: "Duration", value: "60 Minutes Each" },
+  { label: "Batch Size", value: "Max 25 Students" },
+  { label: "Includes", value: "Roadmap + Community" },
+];
+
+export default function BeginnerExperience() {
+  return (
+    <section id="beginner" className="relative overflow-hidden py-28">
+      {/* Background Glow */}
+      <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" />
+      <div className="pointer-events-none absolute -left-40 top-0 h-[400px] w-[400px] rounded-full bg-primary/20 blur-[140px]" />
+      <div className="pointer-events-none absolute -right-40 bottom-0 h-[450px] w-[450px] rounded-full bg-primary/10 blur-[140px]" />
+
+      <div className="relative mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-[1.2fr_0.9fr]">
+        {/* LEFT CONTENT */}
+        <div>
+          <span className="text-xs font-bold uppercase tracking-[0.35em] text-primary">
+            Beginner Experience
+          </span>
+
+          <h2 className="mt-6 font-display text-5xl font-black leading-tight md:text-7xl">
+            Feel the <span className="text-primary">CALYBER</span> system in
+            <br />
+            just 2 sessions.
+          </h2>
+
+          <h3 className="mt-4 text-4xl font-black text-foreground/40 md:text-5xl">
+            For just ₹99.
+          </h3>
+
+          <p className="mt-8 max-w-xl text-lg leading-8 text-foreground/70">
+            Experience our structured dance learning system before joining the
+            complete program. Learn directly from
+            <span className="font-semibold text-primary"> Akash Swami</span>,
+            receive personal guidance and discover how CALYBER helps dancers
+            improve faster.
+          </p>
+
+          <div className="mt-10 grid gap-5">
+            {benefits.map((item) => (
+              <div key={item} className="flex items-center gap-4">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/15">
+                  <span className="text-primary">✓</span>
+                </div>
+
+                <span className="text-lg">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* RIGHT PRICING CARD */}
+        <div className="relative">
+          <div className="absolute -inset-4 rounded-[40px] bg-primary/15 blur-3xl" />
+
+          <div className="relative overflow-hidden rounded-[36px] border border-white/10 bg-white/[0.04] p-10 backdrop-blur-xl">
+            <span className="text-xs uppercase tracking-[0.3em] text-primary">
+              From
+            </span>
+
+            <div className="mt-3 flex items-end gap-4">
+              <span className="font-display text-7xl font-black">₹2,499</span>
+
+              <span className="mb-3 text-xl text-foreground/40 line-through">
+                ₹4,499
+              </span>
+            </div>
+
+            <p className="mt-3 text-sm text-foreground/60">
+              Introductory pricing • Limited seats available
+            </p>
+
+            <div className="mt-10 space-y-6">
+              {pricingDetails.map((detail, index) => (
+                <div
+                  key={detail.label}
+                  className={`flex justify-between gap-4 ${
+                    index === pricingDetails.length - 1
+                      ? "pb-2"
+                      : "border-b border-white/10 pb-4"
+                  }`}
+                >
+                  <span className="text-foreground/60">
+                    {detail.label}
+                  </span>
+
+                  <span className="text-right font-semibold">
+                    {detail.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <a
+              href={WA.lightning}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-10 flex h-16 w-full items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground transition hover:scale-[1.02] hover:brightness-110"
+            >
+              Reserve My Seat →
+            </a>
+
+            <p className="mt-5 text-center text-xs text-foreground/40">
+              No spam. Just workshop details.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -1,14 +1,14 @@
+
 "use client";
 
 import { WA } from "@/lib/whatsapp";
 
 const benefits = [
-  "2 Live Interactive Zoom Sessions",
-  "Personal Dance Assessment",
-  "CALYBER Learning System Explained",
-  "Custom Practice Roadmap",
-  "Live Feedback from Akash Swami",
-  "Private Community Access",
+  "16 Live Classes Over 8 Weeks",
+  "Weekly Practice Plans & Assignments",
+  "Recorded Sessions for Revision",
+  "Progress Tracking & Community Support",
+  "Certificate on Completion",
 ];
 
 const pricingDetails = [
@@ -29,42 +29,44 @@ export default function BeginnerExperience() {
       <div className="relative mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-[1.2fr_0.9fr]">
         {/* LEFT CONTENT */}
         <div>
-          <span className="text-xs font-bold uppercase tracking-[0.35em] text-primary">
-            Beginner Experience
+          <span className="text-xs font-bold uppercase tracking-[0.3em] text-primary">
+            CALYBER Foundation Program
           </span>
 
-          <h2 className="mt-6 font-display text-5xl font-black leading-tight md:text-7xl">
-            Feel the <span className="text-primary">CALYBER</span> system in
+          <h2 className="mt-5 font-display text-4xl font-black leading-tight md:text-6xl">
+            Master the
+            <span className="text-primary"> Basics.</span>
             <br />
-            just 2 sessions.
+            Dance with Confidence.
           </h2>
 
-          <h3 className="mt-4 text-4xl font-black text-foreground/40 md:text-5xl">
-            For just ₹99.
+          <h3 className="mt-4 text-2xl font-black text-foreground/40 md:text-3xl">
+            8 Weeks. 16 Live Classes.
           </h3>
 
-          <p className="mt-8 max-w-xl text-lg leading-8 text-foreground/70">
-            Experience our structured dance learning system before joining the
-            complete program. Learn directly from
-            <span className="font-semibold text-primary"> Akash Swami</span>,
-            receive personal guidance and discover how CALYBER helps dancers
-            improve faster.
+          <p className="mt-5 max-w-xl text-base leading-7 text-foreground/70 md:text-lg">
+            Build your hip-hop dance foundation with CALYBER's structured
+            beginner program. Develop rhythm, movement, and body control
+            through guided classes, practical assignments, and consistent
+            feedback.
           </p>
 
-          <div className="mt-10 grid gap-5">
+          <div className="mt-8 grid gap-4">
             {benefits.map((item) => (
-              <div key={item} className="flex items-center gap-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/15">
-                  <span className="text-primary">✓</span>
+              <div key={item} className="flex items-center gap-3">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/15">
+                  <span className="text-sm text-primary">✓</span>
                 </div>
 
-                <span className="text-lg">{item}</span>
+                <span className="text-sm leading-6 text-foreground/85 md:text-base">
+                  {item}
+                </span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* RIGHT PRICING CARD */}
+        {/* RIGHT PRICING CARD — UNCHANGED */}
         <div className="relative">
           <div className="absolute -inset-4 rounded-[40px] bg-primary/15 blur-3xl" />
 
@@ -89,11 +91,10 @@ export default function BeginnerExperience() {
               {pricingDetails.map((detail, index) => (
                 <div
                   key={detail.label}
-                  className={`flex justify-between gap-4 ${
-                    index === pricingDetails.length - 1
-                      ? "pb-2"
-                      : "border-b border-white/10 pb-4"
-                  }`}
+                  className={`flex justify-between gap-4 ${index === pricingDetails.length - 1
+                    ? "pb-2"
+                    : "border-b border-white/10 pb-4"
+                    }`}
                 >
                   <span className="text-foreground/60">
                     {detail.label}

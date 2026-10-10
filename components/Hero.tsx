@@ -69,17 +69,15 @@ export default function Hero() {
           </Reveal>
 
           <Reveal delay={0.15}>
-            <h2 className="mt-8 font-display text-4xl font-black leading-[0.95] sm:text-5xl md:text-7xl xl:text-8xl">
-              BEFORE YOU
-              <br />
-              LEARN STEPS,
-              <br />
-              <span className="text-primary">
-                LEARN
+            <Reveal delay={0.15}>
+              <h2 className="mt-8 font-display text-4xl font-black leading-[0.95] sm:text-5xl md:text-7xl xl:text-8xl">
+                LEARN TO
                 <br />
-                YOURSELF.
-              </span>
-            </h2>
+                <span className="text-primary">DANCE</span>
+                <br />
+                NOT JUST <br />STEPS.
+              </h2>
+            </Reveal>
           </Reveal>
 
           <Reveal delay={0.2}>

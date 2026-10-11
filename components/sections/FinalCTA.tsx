@@ -1,55 +1,91 @@
+
 import Chip from "@/components/ui/Chip";
 import { WA } from "@/lib/whatsapp";
 
 export default function FinalCTA() {
   return (
-    <section className="relative overflow-hidden py-20">
-      <div className="absolute inset-0 bg-grid opacity-30" />
+    <section className="relative isolate overflow-hidden py-12 sm:py-16 md:py-20 lg:py-24">
+      {/* Background grid */}
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-grid opacity-20 sm:opacity-30" />
 
-      <div className="absolute -left-32 top-0 h-96 w-96 rounded-full bg-primary/10 blur-[140px]" />
+      {/* Ambient glow effects */}
+      <div className="pointer-events-none absolute -left-24 top-0 -z-10 h-48 w-48 rounded-full bg-primary/10 blur-[90px] sm:-left-32 sm:h-72 sm:w-72 sm:blur-[120px] lg:h-96 lg:w-96 lg:blur-[140px]" />
 
-      <div className="absolute -right-20 bottom-0 h-[420px] w-[420px] rounded-full bg-primary/20 blur-[180px]" />
+      <div className="pointer-events-none absolute -right-24 bottom-0 -z-10 h-56 w-56 rounded-full bg-primary/15 blur-[100px] sm:-right-28 sm:h-80 sm:w-80 sm:blur-[140px] lg:-right-20 lg:h-[420px] lg:w-[420px] lg:blur-[180px]" />
 
-      <div className="relative mx-auto max-w-7xl px-6">
-        <div className="overflow-hidden rounded-[40px] border border-primary/20 bg-gradient-to-br from-[#141414] via-[#101010] to-[#090909] px-8 py-8 text-center shadow-[0_0_120px_rgba(252,76,19,.08)] md:px-24 md:py-20">
-          <Chip>Start Your Dance Journey</Chip>
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Main CTA card */}
+        <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-[#141414] via-[#101010] to-[#090909] px-4 py-9 text-center shadow-[0_0_60px_rgba(252,76,19,.06)] sm:rounded-3xl sm:px-8 sm:py-12 sm:shadow-[0_0_90px_rgba(252,76,19,.07)] md:px-12 md:py-16 lg:rounded-[40px] lg:px-16 lg:py-20 xl:px-24">
+          {/* Subtle card glow */}
+          <div className="pointer-events-none absolute left-1/2 top-0 -z-0 h-32 w-48 -translate-x-1/2 rounded-full bg-primary/10 blur-[80px] sm:h-40 sm:w-72" />
 
-          <h2 className="mt-8 font-display text-4xl font-black leading-tight md:text-6xl lg:text-7xl">
-            Dance isn't
-            <span className="text-primary"> Talent.</span>
-            <br />
-            It's a Skill.
-          </h2>
+          <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center">
+            <Chip>Start Your Dance Journey</Chip>
 
-          <p className="mx-auto mt-8 max-w-3xl text-lg leading-8 text-foreground/65">
-            Whether you're taking your very first step or looking for personal
-            coaching, CALYBER gives you the right system to become a confident
-            dancer.
-          </p>
+            {/* Heading */}
+            <h2 className="mt-6 max-w-4xl font-display text-3xl font-black leading-[1.08] tracking-tight sm:mt-7 sm:text-4xl md:mt-8 md:text-5xl lg:text-6xl xl:text-7xl">
+              Dance isn't
+              <span className="text-primary"> Talent.</span>
+              <br className="hidden sm:block" />
+              <span className="sm:hidden"> </span>
+              It's a Skill.
+            </h2>
 
-          <div className="mt-12 flex flex-wrap justify-center gap-5">
-            <a
-              href="#pricing"
-              className="rounded-xl bg-primary px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] text-black transition hover:scale-105"
-            >
-              Start Your Journey →
-            </a>
+            {/* Description */}
+            <p className="mx-auto mt-5 max-w-3xl text-sm leading-6 text-foreground/65 sm:mt-6 sm:text-base sm:leading-7 md:mt-8 md:text-lg md:leading-8">
+              Whether you're taking your very first step or looking for
+              personal coaching, CALYBER gives you the right system to
+              become a confident dancer.
+            </p>
 
-            <a
-              href={WA.question}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-xl border border-white/20 px-10 py-4 text-sm font-bold uppercase tracking-[0.15em] transition hover:border-primary hover:bg-primary/10"
-            >
-              Talk To Us
-            </a>
-          </div>
+            {/* CTA buttons */}
+            <div className="mt-7 flex w-full max-w-xl flex-col justify-center gap-3 sm:mt-9 sm:flex-row sm:gap-4 md:mt-12 md:gap-5">
+              <a
+                href="#pricing"
+                className="group inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-center text-xs font-bold uppercase tracking-[0.12em] text-black transition duration-300 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#101010] sm:min-h-14 sm:w-auto sm:flex-1 sm:px-6 sm:text-sm sm:tracking-[0.13em] md:px-8 lg:px-10"
+              >
+                Start Your Journey
+                <span
+                  aria-hidden="true"
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                >
+                  →
+                </span>
+              </a>
 
-          <div className="mt-16 flex flex-wrap justify-center gap-x-10 gap-y-4 text-sm uppercase tracking-[0.14em] text-white/50">
-            <span>✓ Beginner Friendly</span>
-            <span>✓ Live Classes</span>
-            <span>✓ Community Support</span>
-            <span>✓ Personal Coaching</span>
+              <a
+                href={WA.question}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-white/20 bg-white/[0.02] px-5 py-3.5 text-center text-xs font-bold uppercase tracking-[0.12em] transition duration-300 hover:border-primary hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#101010] sm:min-h-14 sm:w-auto sm:flex-1 sm:px-6 sm:text-sm sm:tracking-[0.13em] md:px-8 lg:px-10"
+              >
+                Talk To Us
+              </a>
+            </div>
+
+            {/* Benefits */}
+            {/* Benefits */}
+            <div className="mt-9 grid w-full max-w-4xl grid-cols-2 gap-3 text-left sm:mt-10 sm:gap-x-6 sm:gap-y-4 md:mt-14 md:gap-4 lg:grid-cols-4 lg:gap-6">
+              {[
+                "Beginner Friendly",
+                "Live Classes",
+                "Community Support",
+                "Personal Coaching",
+              ].map((benefit) => (
+                <div
+                  key={benefit}
+                  className="flex min-w-0 items-center justify-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-2 py-3 text-center text-[10px] font-medium uppercase leading-5 tracking-[0.04em] text-white/55 sm:px-3 sm:text-xs sm:tracking-[0.08em] md:gap-2 md:px-1 md:py-2 lg:flex-col lg:gap-2 lg:border-0 lg:bg-transparent lg:text-xs lg:tracking-[0.1em]"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="shrink-0 text-lg font-bold text-primary sm:text-xl lg:text-2xl xl:text-3xl"
+                  >
+                    ✓
+                  </span>
+                  <span>{benefit}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

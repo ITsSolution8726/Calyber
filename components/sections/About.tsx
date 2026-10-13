@@ -16,7 +16,7 @@ export default function About() {
           <div className="lg:col-span-4">
             <div className="relative overflow-hidden rounded-3xl border border-white/10">
               <img
-                src="/singa-portrait.jpg"
+                src="/Teacher.png"
                 alt="Akash Swami"
                 loading="lazy"
                 className="aspect-[4/5] w-full object-cover transition duration-700 hover:scale-105"

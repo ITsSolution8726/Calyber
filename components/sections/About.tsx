@@ -2,8 +2,8 @@ import Chip from "@/components/ui/Chip";
 
 const stats = [
   { value: "500+", label: "Students Trained" },
-  { value: "8+", label: "Years Experience" },
-  { value: "100+", label: "Live Workshops" },
+  { value: "20+", label: "Years Experience" },
+  { value: "15+", label: "Years Of Teaching" },
   { value: "Founder", label: "CALYBER" },
 ];
 

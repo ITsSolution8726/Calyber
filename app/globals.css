@@ -367,5 +367,5 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: shimmer 3.5s linear infinite;
+  animation: shimmer 3.5s linear infinite reverse;
 }

@@ -16,20 +16,24 @@ const heroDancer = "/hero-dancer.jpg";
 export default function Hero() {
   const stats = [
     {
-      number: "10,000+",
-      label: "Students Transformed",
+      number: "6",
+      label: "Core Skills",
+      description: "Body, Beat, Groove, Control, Music, Create",
     },
     {
-      number: "50+",
-      label: "Cities",
+      number: "16",
+      label: "Guided Classes",
+      description: "A structured Foundation program",
     },
     {
       number: "1",
       label: "Learning System",
+      description: "A clear path from basics to creation",
     },
     {
       number: "100%",
-      label: "Beginner Focused",
+      label: "Beginner-Focused",
+      description: "Designed around learning the fundamentals",
     },
   ];
 
@@ -105,14 +109,18 @@ export default function Hero() {
               {stats.map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur sm:p-5"
+                  className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.03] p-3 backdrop-blur sm:p-5"
                 >
-                  <h3 className="font-display text-2xl font-black text-primary sm:text-3xl">
+                  <h3 className="font-display text-2xl font-black text-primary sm:text-3xl lg:text-4xl">
                     {item.number}
                   </h3>
 
-                  <p className="mt-2 text-[10px] uppercase tracking-[0.1em] text-white/55 sm:text-xs sm:tracking-[0.14em]">
+                  <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.08em] text-white/80 sm:text-xs sm:tracking-[0.1em]">
                     {item.label}
+                  </p>
+
+                  <p className="mt-2 text-xs leading-5 text-white/50 sm:text-sm sm:leading-6">
+                    {item.description}
                   </p>
                 </div>
               ))}

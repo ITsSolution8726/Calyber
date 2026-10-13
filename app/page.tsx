@@ -24,7 +24,7 @@ import ProblemSolution from "@/components/sections/ProblemSolution";
 import Footer from "@/components/layout/footer";
 import Nav from "@/components/layout/Nav";
 
-const WHATSAPP_NUMBER = "10000000000";
+const WHATSAPP_NUMBER = "+919875671010";
 const waLink = (message: string) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 const WHATSAPP_URL = waLink(
@@ -43,8 +43,8 @@ export default function Home() {
       <ProblemSolution />
       <BeginnerExperience />
       <ReadyForMore />
-      <VideoShowcase />
-      <Testimonials />
+      {/* <VideoShowcase /> */}
+      {/* <Testimonials /> */}
       <How />
       <About />
       <FAQ />

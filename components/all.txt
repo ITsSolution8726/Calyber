@@ -19,7 +19,7 @@ const heroDancer = "./hero-dancer.jpg";
 const singaPortrait = "./singa-portrait.jpg";
 const foundationVibe = "./foundation-vibe.jpg";
 const mentorshipImg = "./mentorship.jpg";
-const WHATSAPP_NUMBER = "10000000000";
+const WHATSAPP_NUMBER = "919875671010";
 const waLink = (message: string) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 const WHATSAPP_URL = waLink(

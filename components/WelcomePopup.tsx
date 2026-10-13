@@ -16,7 +16,7 @@ export default function WelcomePopup() {
       // Continue if browser storage is unavailable.
     }
 
-    const timer = window.setTimeout(() => setOpen(true), 1200);
+    const timer = window.setTimeout(() => setOpen(true), 5000);
 
     return () => window.clearTimeout(timer);
   }, []);

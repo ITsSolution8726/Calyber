@@ -95,7 +95,7 @@ export default function Hero() {
           <Reveal delay={0.3}>
             <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:gap-4">
               <a
-                href="#pricing"
+                href="#beginner"
                 className="group inline-flex min-h-14 items-center justify-center gap-3 rounded-xl bg-primary px-6 py-4 text-center text-sm font-bold uppercase tracking-[0.12em] text-black transition-all duration-300 hover:scale-[1.02] sm:px-8 sm:tracking-[0.18em]"
               >
                 Start Your Journey

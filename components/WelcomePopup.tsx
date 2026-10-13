@@ -8,10 +8,25 @@ export default function WelcomePopup() {
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
   const [email, setEmail] = useState("");
+  const [preferredDate, setPreferredDate] = useState("");
+
+  const [minDate, setMinDate] = useState("");
 
   useEffect(() => {
+    // Set today's date as the earliest selectable date.
+    const today = new Date();
+    const localDate = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, "0"),
+      String(today.getDate()).padStart(2, "0"),
+    ].join("-");
+
+    setMinDate(localDate);
+
     try {
-      if (localStorage.getItem("el_popup_dismissed") === "1") return;
+      if (localStorage.getItem("el_popup_dismissed") === "1") {
+        return;
+      }
     } catch {
       // Continue if browser storage is unavailable.
     }
@@ -27,14 +42,25 @@ export default function WelcomePopup() {
     try {
       localStorage.setItem("el_popup_dismissed", "1");
     } catch {
-      // The popup still closes if browser storage is unavailable.
+      // The popup still closes if storage is unavailable.
     }
   };
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const url = WA.webinar(`${first} ${last}`.trim(), email);
+    const name = `${first.trim()} ${last.trim()}`.trim();
+
+    const formattedDate = new Date(
+      `${preferredDate}T12:00:00`,
+    ).toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+
+    const url = WA.liveDemo(name, email.trim(), formattedDate);
+
     window.open(url, "_blank", "noopener,noreferrer");
 
     close();
@@ -43,36 +69,52 @@ export default function WelcomePopup() {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex animate-fade-in items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-      <div className="relative w-full max-w-md animate-scale-in overflow-hidden rounded-3xl border border-white/10 bg-[oklch(0.19_0.02_40)] p-8 shadow-[0_40px_120px_-20px_var(--primary)]">
+    <div className="fixed inset-0 z-[100] flex animate-fade-in items-center justify-center overflow-y-auto bg-black/70 p-4 backdrop-blur-sm">
+      <div className="relative my-auto w-full max-w-md animate-scale-in overflow-hidden rounded-3xl border border-white/10 bg-[oklch(0.19_0.02_40)] p-5 shadow-[0_40px_120px_-20px_var(--primary)] sm:p-8">
+        {/* Close Button */}
         <button
           type="button"
           onClick={close}
-          aria-label="Close"
-          className="absolute right-4 top-4 rounded-full p-1 text-foreground/60 transition hover:bg-white/10 hover:text-foreground"
+          aria-label="Close registration popup"
+          className="absolute right-4 top-4 z-10 rounded-full p-2 text-foreground/60 transition hover:bg-white/10 hover:text-foreground"
         >
           ✕
         </button>
 
+        {/* Decorative Glow */}
         <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-primary/30 blur-3xl" />
 
-        <h3 className="relative font-display text-2xl font-black">
-          Register for the webinar
-        </h3>
+        {/* Heading */}
+        <div className="relative">
+          <span className="inline-flex rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary sm:text-xs">
+            Free Live Demo
+          </span>
 
-        <p className="relative mt-2 text-sm text-foreground/60">
-          Sunday, July 12 · Free · Live on Zoom
-        </p>
+          <h3 className="mt-4 font-display text-2xl font-black sm:text-3xl">
+            Experience CALYBER
+          </h3>
 
+          <p className="mt-2 text-sm leading-6 text-foreground/60">
+            Discover your rhythm, learn new moves, and experience our
+            dance training in a live demo class.
+          </p>
+
+          <p className="mt-3 text-xs font-medium text-primary">
+            Choose your preferred date below.
+          </p>
+        </div>
+
+        {/* Registration Form */}
         <form className="relative mt-6 grid gap-3" onSubmit={submit}>
-          <div className="grid gap-3 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <input
               required
               value={first}
               onChange={(event) => setFirst(event.target.value)}
               placeholder="First name"
               autoComplete="given-name"
-              className="rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm outline-none focus:border-primary"
+              aria-label="First name"
+              className="min-w-0 rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm outline-none transition focus:border-primary"
             />
 
             <input
@@ -81,7 +123,8 @@ export default function WelcomePopup() {
               onChange={(event) => setLast(event.target.value)}
               placeholder="Last name"
               autoComplete="family-name"
-              className="rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm outline-none focus:border-primary"
+              aria-label="Last name"
+              className="min-w-0 rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm outline-none transition focus:border-primary"
             />
           </div>
 
@@ -90,20 +133,46 @@ export default function WelcomePopup() {
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            placeholder="you@example.com"
+            placeholder="Email address"
             autoComplete="email"
-            className="rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm outline-none focus:border-primary"
+            aria-label="Email address"
+            className="w-full min-w-0 rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm outline-none transition focus:border-primary"
           />
+
+          {/* Calendar Date Picker */}
+          <div className="grid gap-2">
+            <label
+              htmlFor="demo-date"
+              className="text-xs font-semibold text-foreground/70"
+            >
+              Preferred demo date
+            </label>
+
+            <input
+              id="demo-date"
+              required
+              type="date"
+              min={minDate || undefined}
+              value={preferredDate}
+              onChange={(event) => setPreferredDate(event.target.value)}
+              aria-label="Preferred demo date"
+              className="w-full min-w-0 rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-foreground outline-none transition focus:border-primary [color-scheme:dark]"
+            />
+          </div>
 
           <button
             type="submit"
-            className="mt-2 rounded-full bg-primary py-4 text-sm font-bold uppercase tracking-[0.14em] text-primary-foreground transition hover:brightness-110"
+            className="mt-2 flex min-h-14 w-full items-center justify-center rounded-full bg-primary px-4 py-4 text-center text-sm font-bold uppercase tracking-[0.1em] text-primary-foreground transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:text-base"
           >
-            Continue in WhatsApp →
+            Register via WhatsApp
+            <span className="ml-2" aria-hidden="true">
+              →
+            </span>
           </button>
 
-          <p className="text-center text-xs text-foreground/50">
-            You&apos;ll be redirected to WhatsApp to confirm your spot.
+          <p className="text-center text-xs leading-5 text-foreground/50">
+            Your details will be sent to WhatsApp so we can help arrange
+            your demo class.
           </p>
         </form>
       </div>

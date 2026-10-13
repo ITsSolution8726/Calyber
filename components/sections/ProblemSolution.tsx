@@ -10,7 +10,7 @@ const oldWay = [
 
 const calyberWay = [
   "Understand rhythm before choreography.",
-  "Develop groove, bounce and musicality.",
+  "Develop groove, technique, bounce and musicality.",
   "Train body control step by step.",
   "Build confidence through repetition.",
   "Freestyle becomes natural.",
@@ -100,7 +100,7 @@ export default function ProblemSolution() {
           <p className="mx-auto mt-8 max-w-3xl text-lg leading-8 text-foreground/70">
             Most dance classes teach choreography first. Students memorize
             shapes without understanding rhythm, groove or body control.
-            CALIBAR changes that by teaching the foundation before the moves.
+            CALYBAR changes that by teaching the foundation before the moves.
           </p>
         </div>
 

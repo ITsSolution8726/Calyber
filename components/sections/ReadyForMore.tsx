@@ -55,10 +55,12 @@ export default function ReadyForMore() {
             <div className="min-w-0">
               <Chip>Personal Dance Classes</Chip>
 
+
               <h2 className="mt-5 font-display text-3xl font-black leading-tight sm:text-4xl md:text-5xl xl:text-6xl">
-                Take Your Dance
-                <span className="text-primary"> Further.</span>
+                One-on-One
+                <span className="text-primary"> Dance Coaching.</span>
               </h2>
+
 
               <p className="mt-4 max-w-lg text-sm leading-6 text-foreground/70 sm:text-base sm:leading-7">
                 Improve your hip-hop dance skills with CALYBER Elite
@@ -67,7 +69,7 @@ export default function ReadyForMore() {
               </p>
 
               <a
-                href={WA.question}
+                href={WA.mentorship}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-center text-sm font-bold uppercase tracking-wide text-black transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#101010] sm:mt-7 sm:w-auto sm:px-7"
@@ -120,7 +122,7 @@ export default function ReadyForMore() {
 
               <div className="mt-6 border-t border-white/10 pt-5">
                 <a
-                  href={WA.question}
+                  href={WA.eliteCoaching}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex min-h-10 items-center gap-2 text-sm font-bold text-primary transition hover:gap-3"

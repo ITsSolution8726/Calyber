@@ -28,7 +28,7 @@ export default function Hero() {
     {
       number: "1",
       label: "Learning System",
-      description: "A clear path from basics to creation",
+      description: "A clear path from basics to advanced",
     },
     {
       number: "100%",

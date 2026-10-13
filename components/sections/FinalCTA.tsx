@@ -1,6 +1,7 @@
 
 import Chip from "@/components/ui/Chip";
 import { WA } from "@/lib/whatsapp";
+import { ArrowRight } from "lucide-react";
 
 export default function FinalCTA() {
   return (
@@ -41,16 +42,11 @@ export default function FinalCTA() {
             {/* CTA buttons */}
             <div className="mt-7 flex w-full max-w-xl flex-col justify-center gap-3 sm:mt-9 sm:flex-row sm:gap-4 md:mt-12 md:gap-5">
               <a
-                href="#pricing"
-                className="group inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-center text-xs font-bold uppercase tracking-[0.12em] text-black transition duration-300 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#101010] sm:min-h-14 sm:w-auto sm:flex-1 sm:px-6 sm:text-sm sm:tracking-[0.13em] md:px-8 lg:px-10"
+                href="#beginner"
+                className="group inline-flex min-h-14 items-center justify-center gap-3 rounded-xl bg-primary px-6 py-4 text-center text-sm font-bold uppercase tracking-[0.12em] text-black transition-all duration-300 hover:scale-[1.02] sm:px-8 sm:tracking-[0.18em]"
               >
                 Start Your Journey
-                <span
-                  aria-hidden="true"
-                  className="transition-transform duration-300 group-hover:translate-x-1"
-                >
-                  →
-                </span>
+                <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" />
               </a>
 
               <a
@@ -63,7 +59,6 @@ export default function FinalCTA() {
               </a>
             </div>
 
-            {/* Benefits */}
             {/* Benefits */}
             <div className="mt-9 grid w-full max-w-4xl grid-cols-2 gap-3 text-left sm:mt-10 sm:gap-x-6 sm:gap-y-4 md:mt-14 md:gap-4 lg:grid-cols-4 lg:gap-6">
               {[

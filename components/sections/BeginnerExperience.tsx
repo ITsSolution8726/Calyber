@@ -1,7 +1,10 @@
 
 "use client";
 
+import { useEffect, useState } from "react";
 import { WA } from "@/lib/whatsapp";
+
+type PricingRegion = "loading" | "india" | "international" | "unavailable";
 
 const benefits = [
   "16 Live Classes Over 8 Weeks",
@@ -12,13 +15,60 @@ const benefits = [
 ];
 
 const pricingDetails = [
-  { label: "Format", value: "2 Live Zoom Sessions" },
-  { label: "Duration", value: "60 Minutes Each" },
-  { label: "Batch Size", value: "Max 25 Students" },
-  { label: "Includes", value: "Roadmap + Community" },
+  { label: "Format", value: "3 Live Zoom Sessions / week" },
+  { label: "Duration", value: "60+ Minutes Each" },
+  { label: "Batch Size", value: "Max 15 Students" },
+  { label: "Includes", value: "Roadmap + Feedback + Community" },
 ];
 
 export default function BeginnerExperience() {
+  const [region, setRegion] = useState<PricingRegion>("loading");
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function detectCountry() {
+      try {
+        const response = await fetch("/api/visitor-country", {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error("Country detection unavailable");
+        }
+
+        const data: { country?: string } = await response.json();
+
+        if (!data.country || !/^[A-Z]{2}$/.test(data.country)) {
+          throw new Error("Invalid country code");
+        }
+
+        setRegion(data.country === "IN" ? "india" : "international");
+      } catch {
+        if (!controller.signal.aborted) {
+          setRegion("unavailable");
+        }
+      }
+    }
+
+    detectCountry();
+
+    return () => controller.abort();
+  }, []);
+
+  const isIndia = region === "india";
+  const hasPricing = region === "india" || region === "international";
+
+  const price = isIndia ? "₹1,999" : "$49";
+  const originalPrice = isIndia ? "₹4,499" : "$89";
+  const currency = isIndia ? "INR" : "USD";
+  const savings = isIndia ? "Save ₹2,500" : "Save $40";
+
+  const whatsappUrl = hasPricing
+    ? WA.foundationPricing(price, originalPrice, currency)
+    : WA.question;
+
   return (
     <section
       id="beginner"
@@ -82,24 +132,69 @@ export default function BeginnerExperience() {
           <div className="pointer-events-none absolute -inset-2 rounded-[28px] bg-primary/15 blur-2xl sm:-inset-4 sm:rounded-[40px] sm:blur-3xl" />
 
           <div className="relative min-w-0 overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl sm:rounded-[32px] sm:p-7 md:p-8 lg:rounded-[36px] lg:p-8 xl:p-10">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-primary sm:text-xs sm:tracking-[0.3em]">
-              From
-            </span>
-
-            {/* Price */}
-            <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 sm:gap-x-4">
-              <span className="font-display text-5xl font-black leading-none tracking-tight sm:text-6xl md:text-7xl">
-                ₹2,499
+            {/* Offer Badge */}
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/15 px-4 py-2 shadow-[0_0_25px_var(--primary)] sm:mb-6">
+              <span
+                className="text-base"
+                aria-hidden="true"
+              >
+                🎉
               </span>
-
-              <span className="text-base text-foreground/40 line-through sm:text-lg md:text-xl">
-                ₹4,499
+              <span className="text-[10px] font-black uppercase tracking-[0.15em] text-primary sm:text-xs sm:tracking-[0.2em]">
+                Durga Puja Special Offer
               </span>
             </div>
 
-            <p className="mt-3 text-xs leading-5 text-foreground/60 sm:text-sm">
-              Introductory pricing • Limited seats available
-            </p>
+            <span className="block text-[10px] font-bold uppercase tracking-[0.25em] text-foreground/50 sm:text-xs sm:tracking-[0.3em]">
+              {region === "loading"
+                ? "Checking Regional Price"
+                : region === "unavailable"
+                  ? "Contact Us for Pricing"
+                  : isIndia
+                    ? "India Offer Price · INR"
+                    : "International Offer Price · USD"}
+            </span>
+
+            {/* Price: never show a regional price before detection */}
+            {region === "loading" ? (
+              <div
+                className="mt-3 space-y-3"
+                role="status"
+                aria-live="polite"
+              >
+                <div className="h-14 w-48 animate-pulse rounded-xl bg-white/10 sm:h-16" />
+                <p className="text-sm text-foreground/60">
+                  Finding the correct price for your location…
+                </p>
+              </div>
+            ) : hasPricing ? (
+              <>
+                <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 sm:gap-x-4">
+                  <span className="font-display text-5xl font-black leading-none tracking-tight sm:text-6xl md:text-7xl">
+                    {price}
+                  </span>
+
+                  <span className="text-base text-foreground/40 line-through sm:text-lg md:text-xl">
+                    {originalPrice}
+                  </span>
+                </div>
+
+                <p className="mt-3 flex flex-wrap items-center gap-2 text-xs leading-5 sm:text-sm">
+                  <span className="rounded-md bg-green-500/15 px-2 py-1 font-bold text-green-400">
+                    {savings}
+                  </span>
+                  <span className="text-foreground/60">
+                    Limited seats available
+                  </span>
+                </p>
+              </>
+            ) : (
+              <p className="mt-4 text-sm leading-6 text-foreground/70">
+                We couldn&apos;t determine your regional pricing automatically.
+                Contact us on WhatsApp to confirm the correct price for your
+                location.
+              </p>
+            )}
 
             {/* Pricing Details */}
             <div className="mt-7 space-y-0 sm:mt-9">
@@ -125,16 +220,35 @@ export default function BeginnerExperience() {
 
             {/* CTA */}
             <a
-              href={WA.lightning}
+              href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 flex min-h-14 w-full items-center justify-center rounded-full bg-primary px-4 py-4 text-center text-sm font-bold leading-5 text-primary-foreground transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:mt-8 sm:min-h-16 sm:px-6 sm:text-base md:text-lg"
+              aria-disabled={region === "loading"}
+              onClick={(event) => {
+                if (region === "loading") {
+                  event.preventDefault();
+                }
+              }}
+              className={`mt-6 flex min-h-14 w-full items-center justify-center rounded-full px-4 py-4 text-center text-sm font-bold leading-5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:mt-8 sm:min-h-16 sm:px-6 sm:text-base md:text-lg ${
+                region === "loading"
+                  ? "cursor-wait bg-primary/40 text-primary-foreground/70"
+                  : "bg-primary text-primary-foreground hover:brightness-110"
+              }`}
             >
-              Reserve My Seat <span className="ml-2" aria-hidden="true">→</span>
+              {region === "loading"
+                ? "Checking Price…"
+                : hasPricing
+                  ? "Reserve My Seat"
+                  : "Ask for Pricing"}
+              <span className="ml-2" aria-hidden="true">
+                →
+              </span>
             </a>
 
             <p className="mt-4 text-center text-[11px] leading-5 text-foreground/40 sm:mt-5 sm:text-xs">
-              No spam. Just workshop details.
+              {hasPricing
+                ? `Prices shown in ${currency}. Contact us for enrollment details.`
+                : "We'll help you confirm pricing and enrollment details."}
             </p>
           </div>
         </div>

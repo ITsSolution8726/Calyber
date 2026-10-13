@@ -51,7 +51,7 @@ export default function Nav() {
           </div>
 
           <a
-            href="#pricing"
+            href="#beginner"
             className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[0_0_40px_-8px_var(--primary)] transition hover:brightness-110"
           >
             Choose access →

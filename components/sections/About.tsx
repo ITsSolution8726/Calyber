@@ -53,17 +53,17 @@ export default function About() {
 
           {/* Stats */}
           <div className="lg:col-span-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
               {stats.map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-center transition hover:border-primary/30 hover:bg-white/[0.05]"
+                  className="flex min-h-[140px] flex-col items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center transition duration-300 hover:border-primary/30 hover:bg-white/[0.05] sm:min-h-[160px] sm:p-6"
                 >
-                  <div className="font-display text-3xl font-black text-primary sm:text-4xl">
+                  <div className="flex w-full items-center justify-center text-center font-display text-2xl font-black leading-tight text-primary sm:text-3xl lg:text-3xl xl:text-4xl">
                     {item.value}
                   </div>
 
-                  <div className="mt-3 text-sm leading-6 text-foreground/70">
+                  <div className="mt-3 flex w-full items-center justify-center text-center text-xs leading-5 text-foreground/70 sm:text-sm sm:leading-6">
                     {item.label}
                   </div>
                 </div>

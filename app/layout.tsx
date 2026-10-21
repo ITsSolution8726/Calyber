@@ -2,6 +2,7 @@ import type React from "react";
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+import { LanguageProvider } from "@/components/LanguageProvider";
 // import FloatingCTA from "@/components/site/FloatingCTA";
 // import Script from "next/script";
 
@@ -127,7 +128,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${headingFont.variable} ${bodyFont.variable}`}>
-      <body className="font-body">{children}</body>
+      <body className="font-body">
+        <LanguageProvider>
+          {children}
+        </LanguageProvider></body>
     </html>
   );
 }

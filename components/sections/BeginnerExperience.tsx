@@ -6,24 +6,122 @@ import { WA } from "@/lib/whatsapp";
 
 type PricingRegion = "loading" | "india" | "international" | "unavailable";
 
-const benefits = [
-  "16 Live Classes Over 8 Weeks",
-  "Weekly Practice Plans & Assignments",
-  "Recorded Sessions for Revision",
-  "Progress Tracking & Community Support",
-  "Certificate on Completion",
-];
+type PricingDetail = {
+  label: string;
+  value: string;
+};
 
-const pricingDetails = [
-  { label: "Format", value: "3 Live Zoom Sessions / week" },
-  { label: "Duration", value: "60+ Minutes Each" },
-  { label: "Batch Size", value: "Max 15 Students" },
-  { label: "Includes", value: "Roadmap + Feedback + Community" },
-];
+type FoundationPricingContent = {
+  offerBadge: string;
+  indiaOfferPrice: number;
+  indiaOriginalPrice: number;
+  internationalOfferPrice: number;
+  internationalOriginalPrice: number;
+  indiaPriceLabel: string;
+  internationalPriceLabel: string;
+  limitedSeatsText: string;
+  reserveButtonText: string;
+  askPricingButtonText: string;
+  benefits: string[];
+  pricingDetails: PricingDetail[];
+};
+
+const defaultPricing: FoundationPricingContent = {
+  offerBadge: "Durga Puja Special Offer",
+  indiaOfferPrice: 1999,
+  indiaOriginalPrice: 4499,
+  internationalOfferPrice: 49,
+  internationalOriginalPrice: 89,
+  indiaPriceLabel: "India Offer Price · INR",
+  internationalPriceLabel: "International Offer Price · USD",
+  limitedSeatsText: "Limited seats available",
+  reserveButtonText: "Reserve My Seat",
+  askPricingButtonText: "Ask for Pricing",
+  benefits: [
+    "16 Live Classes Over 8 Weeks",
+    "Weekly Practice Plans & Assignments",
+    "Recorded Sessions for Revision",
+    "Progress Tracking & Community Support",
+    "Certificate on Completion",
+  ],
+  pricingDetails: [
+    { label: "Format", value: "3 Live Zoom Sessions / week" },
+    { label: "Duration", value: "60+ Minutes Each" },
+    { label: "Batch Size", value: "Max 15 Students" },
+    { label: "Includes", value: "Roadmap + Feedback + Community" },
+  ],
+};
+
+function isValidPricing(data: unknown): data is Partial<FoundationPricingContent> {
+  return typeof data === "object" && data !== null;
+}
+
+function formatMoney(amount: number, currency: "INR" | "USD") {
+  return new Intl.NumberFormat(currency === "INR" ? "en-IN" : "en-US", {
+    style: "currency",
+    currency,
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
 
 export default function BeginnerExperience() {
   const [region, setRegion] = useState<PricingRegion>("loading");
+  const [pricingContent, setPricingContent] =
+    useState<FoundationPricingContent>(defaultPricing);
 
+  // Load editable pricing and card content from Sanity.
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadPricing() {
+      try {
+        const response = await fetch("/api/foundation-pricing", {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error("Sanity pricing request failed");
+        }
+
+        const data: unknown = await response.json();
+
+        if (!isValidPricing(data)) {
+          throw new Error("Invalid pricing content");
+        }
+
+        setPricingContent({
+          ...defaultPricing,
+          ...data,
+          benefits:
+            Array.isArray(data.benefits) && data.benefits.length > 0
+              ? data.benefits.filter(
+                  (item): item is string => typeof item === "string",
+                )
+              : defaultPricing.benefits,
+          pricingDetails:
+            Array.isArray(data.pricingDetails) &&
+            data.pricingDetails.length > 0
+              ? data.pricingDetails.filter(
+                  (item): item is PricingDetail =>
+                    typeof item?.label === "string" &&
+                    typeof item?.value === "string",
+                )
+              : defaultPricing.pricingDetails,
+        });
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          console.error("Could not load Sanity pricing:", error);
+        }
+      }
+    }
+
+    loadPricing();
+
+    return () => controller.abort();
+  }, []);
+
+  // Detect the visitor's country.
   useEffect(() => {
     const controller = new AbortController();
 
@@ -59,11 +157,19 @@ export default function BeginnerExperience() {
 
   const isIndia = region === "india";
   const hasPricing = region === "india" || region === "international";
-
-  const price = isIndia ? "₹1,999" : "$49";
-  const originalPrice = isIndia ? "₹4,499" : "$89";
   const currency = isIndia ? "INR" : "USD";
-  const savings = isIndia ? "Save ₹2,500" : "Save $40";
+
+  const offerAmount = isIndia
+    ? pricingContent.indiaOfferPrice
+    : pricingContent.internationalOfferPrice;
+
+  const originalAmount = isIndia
+    ? pricingContent.indiaOriginalPrice
+    : pricingContent.internationalOriginalPrice;
+
+  const price = formatMoney(offerAmount, currency);
+  const originalPrice = formatMoney(originalAmount, currency);
+  const savings = formatMoney(originalAmount - offerAmount, currency);
 
   const whatsappUrl = hasPricing
     ? WA.foundationPricing(price, originalPrice, currency)
@@ -110,7 +216,7 @@ export default function BeginnerExperience() {
 
           {/* Benefits */}
           <div className="mt-7 grid gap-3 sm:mt-8 sm:gap-4">
-            {benefits.map((item) => (
+            {pricingContent.benefits.map((item) => (
               <div
                 key={item}
                 className="flex min-w-0 items-start gap-3 sm:items-center sm:gap-4"
@@ -134,14 +240,11 @@ export default function BeginnerExperience() {
           <div className="relative min-w-0 overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl sm:rounded-[32px] sm:p-7 md:p-8 lg:rounded-[36px] lg:p-8 xl:p-10">
             {/* Offer Badge */}
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/15 px-4 py-2 shadow-[0_0_25px_var(--primary)] sm:mb-6">
-              <span
-                className="text-base"
-                aria-hidden="true"
-              >
+              <span className="text-base" aria-hidden="true">
                 🎉
               </span>
               <span className="text-[10px] font-black uppercase tracking-[0.15em] text-primary sm:text-xs sm:tracking-[0.2em]">
-                Durga Puja Special Offer
+                {pricingContent.offerBadge}
               </span>
             </div>
 
@@ -151,8 +254,8 @@ export default function BeginnerExperience() {
                 : region === "unavailable"
                   ? "Contact Us for Pricing"
                   : isIndia
-                    ? "India Offer Price · INR"
-                    : "International Offer Price · USD"}
+                    ? pricingContent.indiaPriceLabel
+                    : pricingContent.internationalPriceLabel}
             </span>
 
             {/* Price: never show a regional price before detection */}
@@ -181,10 +284,10 @@ export default function BeginnerExperience() {
 
                 <p className="mt-3 flex flex-wrap items-center gap-2 text-xs leading-5 sm:text-sm">
                   <span className="rounded-md bg-green-500/15 px-2 py-1 font-bold text-green-400">
-                    {savings}
+                    Save {savings}
                   </span>
                   <span className="text-foreground/60">
-                    Limited seats available
+                    {pricingContent.limitedSeatsText}
                   </span>
                 </p>
               </>
@@ -198,11 +301,11 @@ export default function BeginnerExperience() {
 
             {/* Pricing Details */}
             <div className="mt-7 space-y-0 sm:mt-9">
-              {pricingDetails.map((detail, index) => (
+              {pricingContent.pricingDetails.map((detail, index) => (
                 <div
-                  key={detail.label}
+                  key={`${detail.label}-${index}`}
                   className={`grid grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] items-start gap-3 py-4 sm:gap-4 ${
-                    index !== pricingDetails.length - 1
+                    index !== pricingContent.pricingDetails.length - 1
                       ? "border-b border-white/10"
                       : ""
                   }`}
@@ -238,8 +341,8 @@ export default function BeginnerExperience() {
               {region === "loading"
                 ? "Checking Price…"
                 : hasPricing
-                  ? "Reserve My Seat"
-                  : "Ask for Pricing"}
+                  ? pricingContent.reserveButtonText
+                  : pricingContent.askPricingButtonText}
               <span className="ml-2" aria-hidden="true">
                 →
               </span>

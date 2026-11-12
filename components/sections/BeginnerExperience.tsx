@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -27,32 +26,34 @@ type FoundationPricingContent = {
 };
 
 const defaultPricing: FoundationPricingContent = {
-  offerBadge: "Durga Puja Special Offer",
-  indiaOfferPrice: 1999,
-  indiaOriginalPrice: 4499,
-  internationalOfferPrice: 49,
-  internationalOriginalPrice: 89,
-  indiaPriceLabel: "India Offer Price · INR",
-  internationalPriceLabel: "International Offer Price · USD",
-  limitedSeatsText: "Limited seats available",
-  reserveButtonText: "Reserve My Seat",
+  offerBadge: "",
+  indiaOfferPrice: 3400,
+  indiaOriginalPrice: 3400,
+  internationalOfferPrice: 49, // Update when the client confirms the international price.
+  internationalOriginalPrice: 49,
+  indiaPriceLabel: "Programme Fee",
+  internationalPriceLabel: "International Programme Fee",
+  limitedSeatsText: "One-time fee · 12-week programme",
+  reserveButtonText: "Reserve Your Seat",
   askPricingButtonText: "Ask for Pricing",
   benefits: [
-    "16 Live Classes Over 8 Weeks",
-    "Weekly Practice Plans & Assignments",
-    "Recorded Sessions for Revision",
-    "Progress Tracking & Community Support",
-    "Certificate on Completion",
+    "Structured Learning Roadmap",
+    "Recorded Class Access",
+    "WhatsApp Learning Support",
+    "Individual Practice Feedback",
+    "Student Learning Community",
   ],
   pricingDetails: [
-    { label: "Format", value: "3 Live Zoom Sessions / week" },
-    { label: "Duration", value: "60+ Minutes Each" },
-    { label: "Batch Size", value: "Max 15 Students" },
-    { label: "Includes", value: "Roadmap + Feedback + Community" },
+    { label: "Duration", value: "12 Weeks" },
+    { label: "Live Classes", value: "24 Classes" },
+    { label: "Frequency", value: "2 Classes / Week" },
+    { label: "Class Duration", value: "60+ Minutes / Class" },
   ],
 };
 
-function isValidPricing(data: unknown): data is Partial<FoundationPricingContent> {
+function isValidPricing(
+  data: unknown,
+): data is Partial<FoundationPricingContent> {
   return typeof data === "object" && data !== null;
 }
 
@@ -100,8 +101,7 @@ export default function BeginnerExperience() {
                 )
               : defaultPricing.benefits,
           pricingDetails:
-            Array.isArray(data.pricingDetails) &&
-            data.pricingDetails.length > 0
+            Array.isArray(data.pricingDetails) && data.pricingDetails.length > 0
               ? data.pricingDetails.filter(
                   (item): item is PricingDetail =>
                     typeof item?.label === "string" &&
@@ -171,9 +171,9 @@ export default function BeginnerExperience() {
   const originalPrice = formatMoney(originalAmount, currency);
   const savings = formatMoney(originalAmount - offerAmount, currency);
 
-  const whatsappUrl = hasPricing
-    ? WA.foundationPricing(price, originalPrice, currency)
-    : WA.question;
+const whatsappUrl = hasPricing
+  ? WA.foundationPricing(price, currency)
+  : WA.question;
 
   return (
     <section
@@ -195,23 +195,19 @@ export default function BeginnerExperience() {
           </span>
 
           <h2 className="mt-4 break-words font-display text-3xl font-black leading-[1.1] sm:mt-5 sm:text-4xl sm:leading-tight md:text-5xl lg:text-5xl xl:text-6xl">
-            Master the{" "}
-            <span className="text-primary">Basics.</span>
+            Master the <span className="text-primary">Basics.</span>
             <br className="hidden sm:block" />{" "}
-            <span className="sm:whitespace-nowrap">
-              Dance with Confidence.
-            </span>
+            <span className="sm:whitespace-nowrap">Dance with Confidence.</span>
           </h2>
 
           <h3 className="mt-4 text-xl font-black leading-snug text-foreground/40 sm:text-2xl md:text-3xl">
-            8 Weeks. 16 Live Classes.
+            12 Weeks. 24 Live Classes.
           </h3>
 
           <p className="mt-4 max-w-xl text-sm leading-6 text-foreground/70 sm:mt-5 sm:text-base sm:leading-7 md:text-lg">
             Build your hip-hop dance foundation with CALYBER&apos;s structured
-            beginner program. Develop rhythm, movement, and body control
-            through guided classes, practical assignments, and consistent
-            feedback.
+            beginner program. Develop rhythm, movement, and body control through
+            guided classes, practical assignments, and consistent feedback.
           </p>
 
           {/* Benefits */}
@@ -239,6 +235,7 @@ export default function BeginnerExperience() {
 
           <div className="relative min-w-0 overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl sm:rounded-[32px] sm:p-7 md:p-8 lg:rounded-[36px] lg:p-8 xl:p-10">
             {/* Offer Badge */}
+            {/*
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/15 px-4 py-2 shadow-[0_0_25px_var(--primary)] sm:mb-6">
               <span className="text-base" aria-hidden="true">
                 🎉
@@ -247,6 +244,7 @@ export default function BeginnerExperience() {
                 {pricingContent.offerBadge}
               </span>
             </div>
+            */}
 
             <span className="block text-[10px] font-bold uppercase tracking-[0.25em] text-foreground/50 sm:text-xs sm:tracking-[0.3em]">
               {region === "loading"
@@ -259,12 +257,9 @@ export default function BeginnerExperience() {
             </span>
 
             {/* Price: never show a regional price before detection */}
+            {/* Price */}
             {region === "loading" ? (
-              <div
-                className="mt-3 space-y-3"
-                role="status"
-                aria-live="polite"
-              >
+              <div className="mt-3 space-y-3" role="status" aria-live="polite">
                 <div className="h-14 w-48 animate-pulse rounded-xl bg-white/10 sm:h-16" />
                 <p className="text-sm text-foreground/60">
                   Finding the correct price for your location…
@@ -272,30 +267,22 @@ export default function BeginnerExperience() {
               </div>
             ) : hasPricing ? (
               <>
-                <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 sm:gap-x-4">
+                <div className="mt-4">
                   <span className="font-display text-5xl font-black leading-none tracking-tight sm:text-6xl md:text-7xl">
                     {price}
                   </span>
-
-                  <span className="text-base text-foreground/40 line-through sm:text-lg md:text-xl">
-                    {originalPrice}
-                  </span>
                 </div>
 
-                <p className="mt-3 flex flex-wrap items-center gap-2 text-xs leading-5 sm:text-sm">
-                  <span className="rounded-md bg-green-500/15 px-2 py-1 font-bold text-green-400">
-                    Save {savings}
-                  </span>
-                  <span className="text-foreground/60">
-                    {pricingContent.limitedSeatsText}
-                  </span>
+                <p className="mt-4 text-sm font-medium text-foreground/60 sm:text-base">
+                  {isIndia
+                    ? "One-time fee · 12-week programme"
+                    : "Contact us for international enrollment details"}
                 </p>
               </>
             ) : (
               <p className="mt-4 text-sm leading-6 text-foreground/70">
-                We couldn&apos;t determine your regional pricing automatically.
-                Contact us on WhatsApp to confirm the correct price for your
-                location.
+                We couldn't determine your regional pricing automatically.
+                Contact us on WhatsApp to confirm the programme fee.
               </p>
             )}
 

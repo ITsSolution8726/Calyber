@@ -21,7 +21,7 @@ export default function Hero() {
       description: "Body, Beat, Groove, Control, Music, Create",
     },
     {
-      number: "16",
+      number: "24+",
       label: "Guided Classes",
       description: "A structured Foundation program",
     },
@@ -86,8 +86,8 @@ export default function Hero() {
 
           <Reveal delay={0.2}>
             <p className="mt-8 max-w-xl text-base leading-7 text-white/70 sm:text-lg sm:leading-8">
-              We don't teach choreography.
-              <br />
+              {/* We don't teach choreography.
+              <br /> */}
               We build dancers from the inside out.
             </p>
           </Reveal>

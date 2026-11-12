@@ -20,7 +20,7 @@ Thank you!`,
   // Foundation Program
    foundationPricing: (
     price: string,
-    originalPrice: string,
+    // originalPrice: string,
     currency: string,
   ) => waLink(
     "Hi CALYBER!, I'd like to join the Foundation Program. Please share the next batch dates and enrollment details.",

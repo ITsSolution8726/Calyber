@@ -3,84 +3,101 @@ import { defineField, defineType } from "sanity";
 
 export const foundationPricing = defineType({
   name: "foundationPricing",
-  title: "Foundation Program Pricing",
+  title: "Foundation Program Details",
   type: "document",
 
   fields: [
     defineField({
       name: "offerBadge",
-      title: "Offer Badge",
+      title: "Offer Badge (Optional)",
       type: "string",
-      initialValue: "Durga Puja Special Offer",
-      validation: (Rule) => Rule.required(),
+      initialValue: "",
     }),
+
     defineField({
       name: "indiaOfferPrice",
-      title: "India Offer Price (INR)",
+      title: "India Programme Fee (INR)",
       type: "number",
-      initialValue: 1999,
+      initialValue: 3400,
       validation: (Rule) => Rule.required().min(0),
     }),
+
     defineField({
       name: "indiaOriginalPrice",
       title: "India Original Price (INR)",
       type: "number",
-      initialValue: 4499,
+      initialValue: 3400,
       validation: (Rule) => Rule.required().min(0),
     }),
+
     defineField({
       name: "internationalOfferPrice",
-      title: "International Offer Price (USD)",
+      title: "International Programme Fee (USD)",
       type: "number",
       initialValue: 49,
       validation: (Rule) => Rule.required().min(0),
     }),
+
     defineField({
       name: "internationalOriginalPrice",
       title: "International Original Price (USD)",
       type: "number",
-      initialValue: 89,
+      initialValue: 49,
       validation: (Rule) => Rule.required().min(0),
     }),
+
     defineField({
       name: "indiaPriceLabel",
       title: "India Price Label",
       type: "string",
-      initialValue: "India Offer Price · INR",
+      initialValue: "Programme Fee",
     }),
+
     defineField({
       name: "internationalPriceLabel",
       title: "International Price Label",
       type: "string",
-      initialValue: "International Offer Price · USD",
+      initialValue: "International Programme Fee",
     }),
+
     defineField({
       name: "limitedSeatsText",
-      title: "Limited Seats Text",
+      title: "Programme Fee Description",
       type: "string",
-      initialValue: "Limited seats available",
+      initialValue: "One-time fee · 12-week programme",
     }),
+
     defineField({
       name: "reserveButtonText",
       title: "Reserve Button Text",
       type: "string",
-      initialValue: "Reserve My Seat",
+      initialValue: "Reserve Your Seat",
     }),
+
     defineField({
       name: "askPricingButtonText",
       title: "Ask Pricing Button Text",
       type: "string",
       initialValue: "Ask for Pricing",
     }),
+
     defineField({
       name: "benefits",
-      title: "Program Benefits",
+      title: "Programme Includes",
       type: "array",
       of: [{ type: "string" }],
+      initialValue: [
+        "Structured Learning Roadmap",
+        "Recorded Class Access",
+        "WhatsApp Learning Support",
+        "Individual Practice Feedback",
+        "Student Learning Community",
+      ],
     }),
+
     defineField({
       name: "pricingDetails",
-      title: "Pricing Card Details",
+      title: "Programme Details",
       type: "array",
       of: [
         {
@@ -98,6 +115,12 @@ export const foundationPricing = defineType({
             }),
           ],
         },
+      ],
+      initialValue: [
+        { label: "Duration", value: "12 Weeks" },
+        { label: "Live Classes", value: "24 Classes" },
+        { label: "Frequency", value: "2 Classes / Week" },
+        { label: "Class Duration", value: "60+ Minutes / Class" },
       ],
     }),
   ],
